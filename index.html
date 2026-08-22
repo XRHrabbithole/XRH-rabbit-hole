@@ -820,8 +820,15 @@
           </tbody>
         </table>
       </div>
-      <p class="note" id="burn-note" style="margin-top:1rem;">
-        Best-effort live supply from public endpoints. Top 10 requires full payment history to the issuer — check Bithomp / XRPL.to for verification.
+      <p style="text-align:center; color:#888; font-size:0.85rem; margin:1.25rem auto 0.75rem; max-width:520px;">
+        Top 10 historical burners require full payment-history indexing. Verify burns on the explorers below.
+      </p>
+      <div class="btn-row" style="margin: 0.75rem 0 1rem; justify-content: center;">
+        <a href="https://bithomp.com/explorer/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw" target="_blank" rel="noopener" class="btn">Issuer on Bithomp</a>
+        <a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener" class="btn">View on XRPL.to</a>
+      </div>
+      <p class="note" id="burn-note" style="margin-top:0.5rem;">
+        Supply snapshot pulled live when available. Top burners still require full payment history to the issuer.
       </p>
     </div>
   </section>
@@ -935,19 +942,19 @@
                 const burned = Math.max(0, MAX_SUPPLY - supply);
                 burnedEl.textContent = fmt(burned);
               }
-              if (note) note.textContent = 'Supply snapshot pulled live. Top burners still require full payment history to the issuer (see explorer links).';
+              if (note) note.textContent = 'Supply snapshot pulled live. Top burners still require full payment history to the issuer.';
               return;
             }
           } catch (err) { /* try next */ }
         }
         if (supplyEl) supplyEl.textContent = '~999.9M';
         if (burnedEl) burnedEl.textContent = 'see explorers';
-        if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Live Top 10 not available from free public APIs. Use Bithomp / XRPL.to to review payments to the issuer.</td></tr>';
-        if (note) note.textContent = 'Could not reach a public supply API from the browser (CORS). Numbers above are approximate; verify on explorers.';
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Live Top 10 not available from free public APIs yet.</td></tr>';
+        if (note) note.textContent = 'Could not reach a public supply API from the browser (CORS). Numbers are approximate; verify on the explorers below.';
       }
 
       if (tbody) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Top 10 historical burners require full payment-history indexing. Use the issuer explorer links above to verify burns.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Top 10 historical burners require full payment-history indexing. Use the explorer links below to verify burns.</td></tr>';
       }
       loadSupply();
     })();
