@@ -801,9 +801,9 @@
       </div>
 
       <h3 style="text-align:center; margin-bottom:1rem;">Top Burners</h3>
-      <p style="text-align:center; color:#888; font-size:0.85rem; margin-bottom:1.25rem; max-width:520px; margin-left:auto; margin-right:auto;">
-        Full historical ranking of every wallet that has sent XRH to the issuer is not available from free public APIs yet.
-        The table below is ready for live data when a source is available.
+      <p style="text-align:center; color:#888; font-size:0.85rem; margin-bottom:1.25rem; max-width:560px; margin-left:auto; margin-right:auto;">
+        Ranked by XRH sent to the issuer. Powered by a local indexer of issuer payments.
+        Re-run the indexer to refresh this list.
       </p>
 
       <div style="overflow-x:auto;">
@@ -821,7 +821,7 @@
         </table>
       </div>
       <p style="text-align:center; color:#888; font-size:0.85rem; margin:1.25rem auto 0.75rem; max-width:520px;">
-        Top 10 historical burners require full payment-history indexing. Verify burns on the explorers below.
+        Verify individual burns on the explorers below.
       </p>
       <div class="btn-row" style="margin: 0.75rem 0 1rem; justify-content: center;">
         <a href="https://bithomp.com/explorer/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw" target="_blank" rel="noopener" class="btn">Issuer on Bithomp</a>
@@ -918,11 +918,37 @@
         if (n == null || isNaN(n)) return '—';
         if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
         if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
-        return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        return n.toLocaleString(undefined, { maximumFractionDigits: 6 });
+      }
+
+      function shortAddr(a) {
+        if (!a || a.length < 16) return a || '';
+        return a.slice(0, 8) + '…' + a.slice(-6);
+      }
+
+      async function loadBurnsJson() {
+        try {
+          const res = await fetch('burns.json', { cache: 'no-store' });
+          if (!res.ok) return null;
+          return await res.json();
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function renderTop(list) {
+        if (!tbody) return;
+        if (!list || !list.length) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">No indexed burns yet. Run index_burns.py to generate burns.json.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(row => {
+          const href = 'https://bithomp.com/explorer/' + encodeURIComponent(row.address);
+          return '<tr><td>' + row.rank + '</td><td><a href="' + href + '" target="_blank" rel="noopener" style="color:var(--matrix);font-family:ui-monospace,monospace;font-size:0.82rem;">' + shortAddr(row.address) + '</a></td><td>' + fmt(row.burned) + '</td></tr>';
+        }).join('');
       }
 
       async function loadSupply() {
-        // Best-effort: try public endpoints (may be blocked by CORS on some hosts)
         const endpoints = [
           'https://api.xrpl.to/v1/token/' + ISSUER + '-XRH',
           'https://s1.xrplmeta.org/token/XRH:' + ISSUER
@@ -938,25 +964,30 @@
             else if (data.token && data.token.supply != null) supply = parseFloat(data.token.supply);
             if (supply != null && !isNaN(supply)) {
               if (supplyEl) supplyEl.textContent = fmt(supply);
-              if (burnedEl) {
-                const burned = Math.max(0, MAX_SUPPLY - supply);
-                burnedEl.textContent = fmt(burned);
-              }
-              if (note) note.textContent = 'Supply snapshot pulled live. Top burners still require full payment history to the issuer.';
-              return;
+              return supply;
             }
-          } catch (err) { /* try next */ }
+          } catch (err) { /* next */ }
         }
-        if (supplyEl) supplyEl.textContent = '~999.9M';
-        if (burnedEl) burnedEl.textContent = 'see explorers';
-        if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Live Top 10 not available from free public APIs yet.</td></tr>';
-        if (note) note.textContent = 'Could not reach a public supply API from the browser (CORS). Numbers are approximate; verify on the explorers below.';
+        return null;
       }
 
-      if (tbody) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">Top 10 historical burners require full payment-history indexing. Use the explorer links below to verify burns.</td></tr>';
-      }
-      loadSupply();
+      (async function init() {
+        const burns = await loadBurnsJson();
+        if (burns && burns.top10) {
+          renderTop(burns.top10);
+          if (burnedEl && burns.total_burned != null) {
+            burnedEl.textContent = fmt(burns.total_burned);
+          }
+          if (note) {
+            note.textContent = 'Indexed ' + (burns.burn_tx_count || 0) + ' burn txs from ' + (burns.unique_burners || 0) + ' wallets' + (burns.updated_at ? ' · updated ' + burns.updated_at : '') + '. Public RPC history may not include every old payment.';
+          }
+        } else {
+          renderTop([]);
+        }
+        const supply = await loadSupply();
+        if (supply != null && supplyEl) supplyEl.textContent = fmt(supply);
+        else if (supplyEl && !supplyEl.textContent) supplyEl.textContent = '~999.9M';
+      })();
     })();
 
 

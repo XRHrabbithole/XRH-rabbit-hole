@@ -2,9 +2,9 @@
   "issuer": "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw",
   "currency": "XRH",
   "max_supply": 1000000000,
-  "total_burned": 42334.745943,
-  "burn_tx_count": 15,
-  "unique_burners": 15,
+  "total_burned": 40597.860258,
+  "burn_tx_count": 5,
+  "unique_burners": 5,
   "top10": [
     {
       "rank": 1,
@@ -15,68 +15,33 @@
     },
     {
       "rank": 2,
-      "address": "rDckjuo2vVbbyVp49YwLsGd3bPUjUeJq9i",
-      "burned": 867.0,
-      "tx_count": 1,
-      "last_tx": "80CFF0631ACCC915502F01D8473EEC8A0AEB234E196204E6D7EDB9607815E944"
-    },
-    {
-      "rank": 3,
-      "address": "rK1i6wvvZXYdkPqmvcjKz62wNdVw9bd5oG",
-      "burned": 867.0,
-      "tx_count": 1,
-      "last_tx": "B8730C21C3C63349F4955B56478555E711AA4D29DB4007923B958491F7F5F794"
-    },
-    {
-      "rank": 4,
       "address": "rJkkqVjzUjfAC2DbAA3GQmMdGjMXkYTnmw",
       "burned": 589.0,
       "tx_count": 1,
       "last_tx": "342ADB849D38A38019E53DCC92FA76EBBDA420DEBC997644C147B0DBBEC8AF1B"
     },
     {
-      "rank": 5,
+      "rank": 3,
       "address": "rEWLR7J6oLGcmNXh4rUsU4NNcz8yfkdMJJ",
       "burned": 8.836597,
       "tx_count": 1,
       "last_tx": "39787049630F818842CE2CF23789E1D4938561B2C9130A61E0E6C07324465B24"
     },
     {
-      "rank": 6,
-      "address": "rBuNgfP5pxGK82d4pUNJSV1tGqzC1F6hFb",
-      "burned": 1.026778,
+      "rank": 4,
+      "address": "rU7V8Lxe2PvEDG9VvoTYnuzdFfx4Ycr57W",
+      "burned": 0.02366,
       "tx_count": 1,
-      "last_tx": "E8CCE1C0A17C5B08C916C4162A4CC2D1C45F9421FC104066EF40F7E4AC94B956"
+      "last_tx": "9E81859DBB0946D8526BAA665BC2DF433E243BB6A0ED33BF069209B79DB01FA3"
     },
     {
-      "rank": 7,
-      "address": "raR1SVLC7FKdPVyX4bjyDNLc3su2NGZeQ7",
-      "burned": 1.0,
+      "rank": 5,
+      "address": "rUSGdKA1ihfuQb4jUchognGdRigQM8xqVk",
+      "burned": 1e-06,
       "tx_count": 1,
-      "last_tx": "131BFACD4047C678AE0676D6A02A4B809D1C9AE9B27E00F3F968390F3AE175C4"
-    },
-    {
-      "rank": 8,
-      "address": "rFEESaH7YNyBGE5jpkTKJQWFqRvqVL2dC",
-      "burned": 0.561487,
-      "tx_count": 1,
-      "last_tx": "5AF8258A983F60B93E9540E31AE4DD46CD32531FAF090B78C6040A179CA6D054"
-    },
-    {
-      "rank": 9,
-      "address": "rUkNqcoMTEBBbegvJHiWCj8SQpxjrUnBEk",
-      "burned": 0.254314,
-      "tx_count": 1,
-      "last_tx": "4084BECAFBD805D6CECEF3D82954D74E63DB51466C85E6B032F8A251DD404EBA"
-    },
-    {
-      "rank": 10,
-      "address": "rwWfydZ7YQ6pRdS2kc8Y3SSvvm3L2gMes3",
-      "burned": 0.02868,
-      "tx_count": 1,
-      "last_tx": "39A4032DB54852FDE8E4F8FC04708E12CFA733EF56F1A368E00F4DE805106A47"
+      "last_tx": "F9B8711D7E20FA44B1A71660FF25B8A9681584402A5B176A9D9092069700BA66"
     }
   ],
-  "updated_at": "2026-08-22T17:13:58Z",
+  "updated_at": "2026-08-22T16:38:41Z",
   "note": "Burns = successful Payments of XRH with Destination = issuer."
 }
