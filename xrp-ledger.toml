@@ -1,0 +1,32 @@
+# Host this file at:
+#   https://YOURDOMAIN/.well-known/xrp-ledger.toml
+# Then set the issuer account Domain field to YOURDOMAIN (no https://).
+
+[[ISSUERS]]
+address = "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw"
+name = "XRH"
+desc = "XRH — The Rabbit Hole. A meme with a dream on the XRP Ledger."
+
+[[TOKENS]]
+issuer = "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw"
+currency = "XRH"
+name = "XRH"
+desc = "XRH — The Rabbit Hole. A meme with a dream on XRPL."
+icon = "https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png"
+
+[[TOKENS.WEBLINKS]]
+url = "https://xrhrabbithole.github.io/XRH-rabbit-hole/"
+type = "website"
+title = "Official Website"
+
+[[TOKENS.WEBLINKS]]
+url = "https://x.com/TheRabbitH0LZ"
+type = "socialmedia"
+title = "X"
+
+[[CURRENCIES]]
+code = "XRH"
+issuer = "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw"
+name = "XRH"
+icon = "https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png"
+url = "https://xrhrabbithole.github.io/XRH-rabbit-hole/"
