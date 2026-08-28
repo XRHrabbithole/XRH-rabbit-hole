@@ -1,0 +1,47 @@
+{
+  "issuer": "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw",
+  "currency": "XRH",
+  "max_supply": 1000000000,
+  "total_burned": 40597.860258,
+  "burn_tx_count": 5,
+  "unique_burners": 5,
+  "top10": [
+    {
+      "rank": 1,
+      "address": "rwepkDSZ6abW3jr8GYPav3Q5sniDwKaSo8",
+      "burned": 40000.0,
+      "tx_count": 1,
+      "last_tx": "0C33F6206CC76A4ED5A902AA93DE5A7533C2781FD1B371F696AAFA4D22A78145"
+    },
+    {
+      "rank": 2,
+      "address": "rJkkqVjzUjfAC2DbAA3GQmMdGjMXkYTnmw",
+      "burned": 589.0,
+      "tx_count": 1,
+      "last_tx": "342ADB849D38A38019E53DCC92FA76EBBDA420DEBC997644C147B0DBBEC8AF1B"
+    },
+    {
+      "rank": 3,
+      "address": "rEWLR7J6oLGcmNXh4rUsU4NNcz8yfkdMJJ",
+      "burned": 8.836597,
+      "tx_count": 1,
+      "last_tx": "39787049630F818842CE2CF23789E1D4938561B2C9130A61E0E6C07324465B24"
+    },
+    {
+      "rank": 4,
+      "address": "rU7V8Lxe2PvEDG9VvoTYnuzdFfx4Ycr57W",
+      "burned": 0.02366,
+      "tx_count": 1,
+      "last_tx": "9E81859DBB0946D8526BAA665BC2DF433E243BB6A0ED33BF069209B79DB01FA3"
+    },
+    {
+      "rank": 5,
+      "address": "rUSGdKA1ihfuQb4jUchognGdRigQM8xqVk",
+      "burned": 1e-06,
+      "tx_count": 1,
+      "last_tx": "F9B8711D7E20FA44B1A71660FF25B8A9681584402A5B176A9D9092069700BA66"
+    }
+  ],
+  "updated_at": "2026-08-22T16:38:41Z",
+  "note": "Burns = successful Payments of XRH with Destination = issuer."
+}
