@@ -5,124 +5,1020 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>XRH — The Rabbit Hole | XRPL Meme Token</title>
   <meta name="description" content="XRH - The Rabbit Hole. A meme with a dream on the XRP Ledger. Follow the white rabbit." />
-  <link rel="icon" href="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" />
+  <link rel="icon" href="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07040f;
-      --card: #14091f;
-      --pink: #ff4d9a;
-      --purple: #9b5cff;
-      --gold: #ffe08a;
-      --ink: #f6f0ff;
-      --muted: #cbb8e6;
+      --bg: #050505;
+      --bg-elevated: #0c0c0c;
+      --fg: #f5f5f5;
+      --fg-muted: #a0a0a0;
+      --matrix: #00ff41;
+      --matrix-soft: rgba(0, 255, 65, 0.12);
+      --matrix-glow: rgba(0, 255, 65, 0.35);
+      --card: rgba(18, 18, 18, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(0, 255, 65, 0.35);
+      --radius: 16px;
+      --radius-sm: 10px;
     }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; }
-    a { color: var(--gold); }
-    header {
-      padding: 28px 18px 10px;
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Matrix rain */
+    #matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.18;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.75rem;
+      background: rgba(5, 5, 5, 0.8);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid var(--matrix);
+      box-shadow: 0 0 12px var(--matrix-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--matrix);
+      background: var(--matrix-soft);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* Sections */
+    section {
+      min-height: 100vh;
+      padding: 7rem 1.5rem 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .container {
+      max-width: 980px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 4.2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
       text-align: center;
-      background: radial-gradient(ellipse at 50% 0%, #3a1466 0%, #07040f 62%);
+      line-height: 1.1;
     }
-    header img { width: 84px; height: 84px; border-radius: 50%; box-shadow: 0 0 28px #ff4d9a66; }
-    h1 { letter-spacing: 0.16em; margin: 12px 0 4px; font-size: 28px; }
-    .sub { color: var(--muted); margin: 0 0 18px; }
-    nav { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 1.25rem;
+      text-align: center;
+      letter-spacing: -0.03em;
+    }
+
+    h2 .mono {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--matrix);
+      font-weight: 500;
+      font-size: 0.85em;
+      margin-right: 0.35rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+    }
+
+    .lead {
+      font-size: 1.15rem;
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 2.25rem;
+      color: var(--fg-muted);
+      line-height: 1.7;
+    }
+
+    /* Hero */
+    #home {
+      text-align: center;
+    }
+
+    .hero-logo {
+      width: min(220px, 55vw);
+      height: auto;
+      margin-bottom: 1.75rem;
+      filter: drop-shadow(0 0 28px var(--matrix-glow));
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--matrix);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin: 0.75rem 0 0.4rem;
+    }
+
+    .sub-tag {
+      color: var(--fg-muted);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
     .btn {
-      display: inline-block; text-decoration: none; color: #140814; font-weight: 800;
-      background: linear-gradient(90deg, var(--pink), var(--purple));
-      padding: 10px 16px; border-radius: 999px; font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.4rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--fg);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .btn.ghost { background: transparent; color: var(--ink); border: 1px solid #ffffff33; }
-    main { max-width: 860px; margin: 0 auto; padding: 10px 16px 60px; }
-    section { margin: 28px 0; }
-    h2 { color: var(--gold); letter-spacing: 0.08em; font-size: 15px; text-transform: uppercase; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-    .card { background: var(--card); border: 1px solid #ffffff14; border-radius: 16px; padding: 16px; }
-    .stats { display: flex; gap: 10px; flex-wrap: wrap; }
-    .stat { background: #ffffff10; border-radius: 12px; padding: 10px 12px; min-width: 90px; }
-    .stat b { display: block; font-size: 18px; }
-    .stat span { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
-    code { background: #0006; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
-    footer { text-align: center; color: var(--muted); padding: 24px; font-size: 12px; }
+
+    .btn:hover {
+      border-color: var(--matrix);
+      color: var(--matrix);
+      background: var(--matrix-soft);
+      box-shadow: 0 0 20px var(--matrix-glow);
+    }
+
+    .btn-primary {
+      background: var(--matrix);
+      color: #000;
+      border-color: var(--matrix);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: #00e03a;
+      color: #000;
+      border-color: #00e03a;
+      box-shadow: 0 0 24px var(--matrix-glow);
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.6rem;
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--matrix-soft);
+      transform: translateY(-2px);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+
+    /* About */
+    .about-text {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-text p {
+      color: var(--fg-muted);
+    }
+
+    .quote {
+      font-size: 1.1rem;
+      font-style: normal;
+      color: var(--fg);
+      background: var(--matrix-soft);
+      border: 1px solid rgba(0, 255, 65, 0.2);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      margin: 2rem auto;
+      max-width: 520px;
+      text-align: left;
+      line-height: 1.7;
+    }
+
+    .quote strong {
+      color: var(--matrix);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+    }
+
+    /* NFT highlight */
+    .nft-highlight {
+      background: linear-gradient(145deg, rgba(0, 255, 65, 0.06) 0%, rgba(18, 18, 18, 0.9) 100%);
+      border: 1px solid rgba(0, 255, 65, 0.2);
+      padding: 2.25rem;
+      border-radius: var(--radius);
+      margin-top: 1.5rem;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .nft-highlight h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nft-highlight p {
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Info boxes */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2.25rem 0;
+    }
+
+    .info-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.35rem 1rem;
+      text-align: center;
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(8px);
+    }
+
+    .info-box .label {
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    .info-box .value {
+      font-size: 1.25rem;
+      color: var(--matrix);
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Table */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: rgba(0, 255, 65, 0.06);
+      color: var(--matrix);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(0, 255, 65, 0.03);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 1.25rem;
+      text-align: center;
+    }
+
+    /* Footer */
+    footer {
+      background: #030303;
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--fg-muted);
+      text-decoration: none;
+      margin: 0 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--matrix);
+    }
+
+    .footer-logo {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 1rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--matrix);
+      box-shadow: 0 0 16px var(--matrix-glow);
+    }
+
+    .footer-title {
+      margin-bottom: 1.25rem;
+      color: var(--fg);
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .disclaimer {
+      font-size: 0.75rem;
+      color: #555;
+      max-width: 560px;
+      margin: 1.75rem auto 0;
+      line-height: 1.55;
+    }
+
+    /* Mobile */
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(5, 5, 5, 0.97);
+        flex-direction: column;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border);
+        gap: 0.25rem;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      section {
+        padding: 5.5rem 1.15rem 3.5rem;
+      }
+
+      .btn-row {
+        gap: 0.6rem;
+      }
+
+      .btn {
+        padding: 0.7rem 1.15rem;
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH" />
-    <h1>XRH</h1>
-    <p class="sub">The Rabbit Hole · a meme with a dream · XRPL</p>
-    <nav>
-      <a class="btn" href="game/">Play Go Deeper</a>
-      <a class="btn ghost" href="#token">Token</a>
-      <a class="btn ghost" href="#burn">Burn</a>
-    </nav>
-  </header>
+  <canvas id="matrix-bg"></canvas>
 
-  <main>
-    <section id="about">
-      <h2>// About</h2>
-      <p><b>XRH</b> (The Rabbit Hole) is a community-born meme token on the XRP Ledger. It started as a Telegram group diving into conspiracy theories, upcoming tech, and everything in between. Now it’s a playful on-chain experiment with farming, NFTs, and daily rewards.</p>
-      <p><i>“The deeper the burrow. Further you fall. Look up! See the light at the end of the tunnel.”</i></p>
-      <div class="stats">
-        <div class="stat"><b>XRPL</b><span>CHAIN</span></div>
-        <div class="stat"><b>~1B</b><span>SUPPLY</span></div>
-        <div class="stat"><b>~1.5K+</b><span>HOLDERS</span></div>
-        <div class="stat"><b>MEME</b><span>VIBE</span></div>
-      </div>
-    </section>
+  <nav>
+    <a href="#home" class="nav-brand">
+      <img src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH Logo" />
+      <span>XRH</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#nft">NFT</a></li>
+      <li><a href="#richlist">Token Info</a></li>
+      <li><a href="#stream">Stream</a></li>
+      <li><a href="#buy">Path</a></li>
+      <li><a href="#burn">Burn</a></li>
+    </ul>
+  </nav>
 
-    <section id="games">
-      <h2>// Mini-games</h2>
-      <div class="card">
-        <h3>Go Deeper</h3>
-        <p>Free runner. Steer the XRH rabbit, dodge rugs, clear 45-second levels, roll random $XRH. Harder by 7% each level. Collect at the end to a Xaman / Crossmark / Gem wallet.</p>
-        <a class="btn" href="game/">Open game</a>
-      </div>
-    </section>
-
-    <section id="nft">
-      <h2>// NFT</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Follow The White Rabbit</h3>
-          <p>Official utility NFT. Holders get quarterly drops (RPR, ASC, GRIM) and community perks.</p>
-          <a href="https://nftmarketplace.opulencex.io/collection/68a49af76173eab8ae5dfa94/items" target="_blank" rel="noopener">Collection →</a>
-        </div>
-        <div class="card">
-          <h3>Farming &amp; Honeycomb</h3>
-          <p>Stake and earn daily $XRH. Add liquidity to the XRH/XRP pool on OpulenceX.</p>
-          <a href="https://opulfi.io/opulfarming/xrhxrp" target="_blank" rel="noopener">Farm →</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="token">
-      <h2>// Token info</h2>
-      <p>Currency <b>XRH</b><br/>
-      Issuer <code>r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw</code></p>
-      <p>
-        <a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener">Chart / trade on XRPL.to</a><br/>
-        Owner · <a href="https://x.com/AgentBoone82" target="_blank" rel="noopener">@AgentBoone82</a>
+  <!-- HOME -->
+  <section id="home">
+    <div class="container">
+      <img src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH — The Rabbit Hole" class="hero-logo" />
+      <h1>XRH</h1>
+      <p class="tagline">The Rabbit Hole</p>
+      <p class="sub-tag">A meme with a dream · XRPL</p>
+      <p class="lead">
+        Born from late-night Telegram chats about conspiracies, tech marvels, and the weird wonderful unknown.
+        Follow the white rabbit. The deeper the burrow…
       </p>
-    </section>
+      <div class="btn-row">
+        <a href="game/" class="btn btn-primary">Play Go Deeper</a>
+        <a href="#buy" class="btn">Enter the Hole</a>
+        <a href="https://x.com/TheRabbitH0LZ" target="_blank" rel="noopener" class="btn">Follow on X</a>
+        <a href="https://t.me/+w4SHfsBqsfFlODdh" target="_blank" rel="noopener" class="btn">Join Telegram</a>
+      </div>
+    </div>
+  </section>
 
-    <section id="how">
-      <h2>// How to start</h2>
-      <ol>
-        <li>Get a wallet: Xaman, Crossmark, or GemWallet. Fund a little XRP for fees.</li>
-        <li>Set trustline: currency <b>XRH</b>, issuer above.</li>
-        <li>Swap XRP → XRH on the XRPL DEX.</li>
-      </ol>
-    </section>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <h2><span class="mono">//</span> About</h2>
+      <div class="about-text">
+        <p>
+          <strong style="color: var(--fg);">XRH</strong> (The Rabbit Hole) is a community-born meme token on the XRP Ledger.
+          It started as a Telegram group diving into conspiracy theories, upcoming tech, and everything in between.
+          Now it’s a playful on-chain experiment with farming, NFTs, and daily rewards.
+        </p>
+        <div class="quote">
+          “The deeper the burrow.<br>
+          Further you fall.<br>
+          Spiral down to the depths, this weird, wonderful, scary & twisted world.<br>
+          Look up! See the light at the end of the tunnel.”
+        </div>
+        <p>
+          Fast, cheap XRPL transactions. Staking pools. NFT utility. A community that likes to go further down the hole.
+          No promises of riches — just a meme with a dream and some code running on the ledger.
+        </p>
+      </div>
 
-    <section id="burn">
-      <h2>// Burn XRH</h2>
-      <p>Send $XRH to the issuer to remove it from circulation.</p>
-      <p>Burn address<br/><code>r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw</code></p>
-      <p>The issuer is <b>not blackholed</b>, so new tokens can still be issued.</p>
-    </section>
-  </main>
-  <footer>Community site. Verify everything on-ledger.</footer>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="label">Chain</div>
+          <div class="value">XRPL</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Supply</div>
+          <div class="value">~1B</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Holders</div>
+          <div class="value">~1.5K+</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Vibe</div>
+          <div class="value">Meme</div>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: 2.5rem; font-size: 0.85rem; color: #666;">
+        Owner · <a href="https://x.com/AgentBoone82" target="_blank" rel="noopener" style="color: var(--matrix); text-decoration: none;">@AgentBoone82</a>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- GAMES -->
+  <section id="games">
+    <div class="container">
+      <h2><span class="mono">//</span> Mini-games</h2>
+      <p class="lead">Free to play. Bank random $XRH as you go deeper.</p>
+      <div class="nft-highlight">
+        <h3>Go Deeper</h3>
+        <p>
+          Steer the XRH rabbit. Dodge rugs. Each level is 45 seconds and 7% harder than the last.
+          Beat a level to roll random $XRH (cap 1,000). Collect at the end to Xaman, Crossmark, or GemWallet.
+        </p>
+        <div class="btn-row" style="margin-top: 1.5rem;">
+          <a href="game/" class="btn btn-primary">Play Go Deeper</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NFT -->
+  <section id="nft">
+    <div class="container">
+      <h2><span class="mono">//</span> NFT</h2>
+      <p class="lead">
+        Utility meets rabbit energy. Hold the right NFTs and unlock rewards from the hole.
+      </p>
+
+      <div class="nft-highlight">
+        <h3>Follow The White Rabbit</h3>
+        <p>
+          Official utility NFT collection from XRH. Holders get access to quarterly drops
+          (RPR, ASC, GRIM) and deeper community perks.
+          Follow the white rabbit into a diverse array of tokens.
+        </p>
+        <div class="btn-row" style="margin-top: 1.5rem;">
+          <a href="https://nftmarketplace.opulencex.io/collection/68a49af76173eab8ae5dfa94/items" target="_blank" rel="noopener" class="btn btn-primary">View Collection</a>
+          <a href="https://xrpl.to/nfts/follow-the-white-rabbit" target="_blank" rel="noopener" class="btn">View on XRPL.to</a>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Farming & Honeycomb</h3>
+          <p>Stake and earn daily $XRH rewards through community farming pools and Honeycomb integrations. Add liquidity to the XRH/XRP pool on OpulenceX.</p>
+          <p style="margin-top: 1rem;">
+            <a href="https://opulfi.io/opulfarming/xrhxrp" target="_blank" rel="noopener" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Farm on OpulenceX →</a>
+          </p>
+        </div>
+        <div class="card">
+          <h3>Quarterly Drops</h3>
+          <p>NFT holders receive passive rewards in companion tokens like RPR, ASC, and GRIM.</p>
+          <p style="margin-top: 1rem;">
+            <a href="https://nftmarketplace.opulencex.io/collection/68a49af76173eab8ae5dfa94/items" target="_blank" rel="noopener" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Follow The White Rabbit →</a>
+          </p>
+          <p style="margin-top: 0.75rem;">
+            <a href="https://autumn-onyx-hill-zephyr.grok.me" target="_blank" rel="noreferrer" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">See more than just the art →</a>
+          </p>
+        </div>
+        <div class="card">
+          <h3>Community First</h3>
+          <p>Everything is built around the Telegram + X community that started the rabbit hole.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RICH LIST -->
+  <section id="richlist">
+    <div class="container">
+      <h2><span class="mono">//</span> Token Info</h2>
+      <p class="lead">
+        Live data lives on the ledger. Here’s the key info and where to check the real rich list.
+      </p>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="label">Currency</div>
+          <div class="value">XRH</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Approx Supply</div>
+          <div class="value">999.94M</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Issuer</div>
+          <div class="value" style="font-size: 0.7rem; word-break: break-all; line-height: 1.3;">r9xu7pd…U1Zw</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>What to check</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Live price, chart, holders</td>
+              <td><a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener" style="color: var(--matrix);">XRPL.to</a></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Token explorer & trustlines</td>
+              <td><a href="https://xrpscan.com" target="_blank" rel="noopener" style="color: var(--matrix);">XRPScan</a> / Bithomp</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Issuer account</td>
+              <td class="mono"><a href="https://xrpl.to/address/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw" target="_blank" rel="noopener" style="color: var(--matrix);">r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw</a></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>DEX / Trade</td>
+              <td><a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener" style="color: var(--matrix);">Trade on XRPL DEX</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        Rich list data changes constantly. Always verify on a block explorer. This site is community / fan-made and not an official dashboard.
+      </p>
+    </div>
+  </section>
+
+  <!-- SCHMECKLES STREAM -->
+  <section id="stream">
+    <div class="container" style="text-align: center;">
+      <h2><span class="mono">//</span> Schmeckles Twitch Stream</h2>
+      <p class="lead">
+        Jump into the weekly live stream. Spin the whirly dirly and you might walk away with some XRH.
+      </p>
+      <img src="schmeckles-stream.jpg" alt="Come watch the weekly Schmeckles giveaway Twitch stream" style="max-width: 100%; width: 560px; border-radius: 16px; margin: 1.5rem auto; display: block; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.4);" />
+      <p style="max-width: 540px; margin: 1rem auto 0; color: #aaa; line-height: 1.6;">
+        Normally <strong style="color: var(--fg);">Sat 10 AM AEST</strong> (Fri 7 PM CT).<br>
+        Times can change — watch <a href="https://x.com/Schmeckles_XRPL" target="_blank" rel="noopener" style="color: var(--matrix);">@Schmeckles_XRPL</a> for updates.
+      </p>
+      <div class="btn-row" style="margin-top: 1.75rem;">
+        <a href="https://twitch.tv/schmeckles_xrpl" target="_blank" rel="noopener" class="btn btn-primary">Watch on Twitch</a>
+        <a href="https://x.com/Schmeckles_XRPL" target="_blank" rel="noopener" class="btn">Updates on X</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUY -->
+  <section id="buy">
+    <div class="container" style="text-align: center;">
+      <h2><span class="mono">//</span> How to start your path in the rabbit hole</h2>
+      <p class="lead">
+        XRPL is fast and cheap. Here’s the short path into the hole.
+      </p>
+
+      <div class="card-grid" style="text-align: left;">
+        <div class="card">
+          <h3>1. Get a wallet</h3>
+          <p>Xaman, Crossmark, GemWallet, or any XRPL-compatible wallet. Fund it with a little XRP for fees + trading.</p>
+        </div>
+        <div class="card">
+          <h3>2. Set the trustline</h3>
+          <p>Currency: <strong style="color: var(--fg);">XRH</strong><br>
+          Issuer: <span class="mono" style="color: var(--matrix);">r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw</span><br>
+          Most DEX UIs set this automatically when you trade.</p>
+        </div>
+        <div class="card">
+          <h3>3. Swap XRP → XRH</h3>
+          <p>Use the native XRPL DEX via XRPL.to, First Ledger, or your wallet’s built-in swap. Sub-cent fees, seconds to settle.</p>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top: 2.5rem;">
+        <a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener" class="btn btn-primary">Trade XRH Now</a>
+        <a href="https://x.com/TheRabbitH0LZ" target="_blank" rel="noopener" class="btn">Official X</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BURN -->
+  <section id="burn">
+    <div class="container">
+      <h2><span class="mono">//</span> Burn XRH</h2>
+      <p class="lead">
+        Send $XRH to the issuer to remove it from circulation. Every burn shrinks the supply.
+      </p>
+      <img src="burn-this-is-fine.jpg" alt="This is fine — XRH burn" style="max-width:100%; width:420px; border-radius:16px; margin:1.25rem auto 1.75rem; display:block; border:1px solid var(--border); box-shadow:0 8px 32px rgba(0,0,0,0.45);" />
+
+      <div class="info-grid" style="margin-bottom: 2rem;">
+        <div class="info-box">
+          <div class="label">Burn Address (Issuer)</div>
+          <div class="value mono" style="font-size: 0.75rem; word-break: break-all; color: var(--matrix);" id="burn-address">r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Est. Circulating</div>
+          <div class="value" id="burn-supply">—</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Est. Burned</div>
+          <div class="value" id="burn-total" style="color: var(--matrix);">—</div>
+        </div>
+        <div class="info-box">
+          <div class="label">Max Supply</div>
+          <div class="value">~1B</div>
+        </div>
+      </div>
+
+      <p style="text-align:center; color:#888; font-size:0.9rem; margin-bottom:1.5rem;">
+        How to burn: In Xaman (or any XRPL wallet) send any amount of <strong style="color:var(--fg)">XRH</strong> to the issuer address above.
+        Those tokens leave circulation. The issuer is <strong style="color:var(--fg)">not blackholed</strong>, so new tokens can still be issued.
+      </p>
+
+      <div class="btn-row" style="margin-bottom: 2.5rem; justify-content: center;">
+        <button type="button" class="btn btn-primary" id="copy-burn-addr">Copy Burn Address</button>
+      </div>
+
+      <h3 style="text-align:center; margin-bottom:1rem;">Top Burners</h3>
+      <p style="text-align:center; color:#888; font-size:0.85rem; margin-bottom:1.25rem; max-width:560px; margin-left:auto; margin-right:auto;">
+        Ranked by XRH sent to the issuer. Powered by a local indexer of issuer payments.
+        Re-run the indexer to refresh this list.
+      </p>
+
+      <div style="overflow-x:auto;">
+        <table class="rich-table" id="burn-leaderboard">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Address</th>
+              <th>XRH Burned</th>
+            </tr>
+          </thead>
+          <tbody id="burn-tbody">
+            <tr><td colspan="3" style="text-align:center; color:#666;">Loading burn data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="text-align:center; color:#888; font-size:0.85rem; margin:1.25rem auto 0.75rem; max-width:520px;">
+        Verify individual burns on the explorers below.
+      </p>
+      <div class="btn-row" style="margin: 0.75rem 0 1rem; justify-content: center;">
+        <a href="https://bithomp.com/explorer/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw" target="_blank" rel="noopener" class="btn">Issuer on Bithomp</a>
+        <a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener" class="btn">View on XRPL.to</a>
+      </div>
+      <p class="note" id="burn-note" style="margin-top:0.5rem;">
+        Supply snapshot pulled live when available. Top burners still require full payment history to the issuer.
+      </p>
+    </div>
+  </section>
+
+
+  <footer>
+    <img src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH" class="footer-logo" />
+    <p class="footer-title">XRH — The Rabbit Hole</p>
+    <div>
+      <a href="https://x.com/TheRabbitH0LZ" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="https://t.me/+w4SHfsBqsfFlODdh" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://xrpl.to/token/r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw-XRH" target="_blank" rel="noopener">Trade</a>
+    </div>
+    <p class="disclaimer">
+      This is a community website for the XRH meme token on the XRP Ledger. Not financial advice.
+      Cryptocurrency is highly risky. DYOR. The site is not affiliated with any official company and is provided for fun and information only.
+      Always verify contract addresses and use official community channels.
+    </p>
+  </footer>
+
+  <script>
+    // Mobile nav
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => links.classList.remove('open'));
+    });
+
+    // Matrix rain
+    const canvas = document.getElementById('matrix-bg');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFXRH$RABBIT';
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 45);
+
+    // Burn section helpers
+    (function () {
+      const ISSUER = 'r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw';
+      const MAX_SUPPLY = 1000000000;
+      const copyBtn = document.getElementById('copy-burn-addr');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(ISSUER);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy Burn Address'; }, 1800);
+          } catch (e) {
+            copyBtn.textContent = 'Copy failed';
+          }
+        });
+      }
+
+      const supplyEl = document.getElementById('burn-supply');
+      const burnedEl = document.getElementById('burn-total');
+      const tbody = document.getElementById('burn-tbody');
+      const note = document.getElementById('burn-note');
+
+      function fmt(n) {
+        if (n == null || isNaN(n)) return '—';
+        if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+        if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+        return n.toLocaleString(undefined, { maximumFractionDigits: 6 });
+      }
+
+      function shortAddr(a) {
+        if (!a || a.length < 16) return a || '';
+        return a.slice(0, 8) + '…' + a.slice(-6);
+      }
+
+      async function loadBurnsJson() {
+        try {
+          const res = await fetch('burns.json', { cache: 'no-store' });
+          if (!res.ok) return null;
+          return await res.json();
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function renderTop(list) {
+        if (!tbody) return;
+        if (!list || !list.length) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;">No indexed burns yet. Run index_burns.py to generate burns.json.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(row => {
+          const href = 'https://bithomp.com/explorer/' + encodeURIComponent(row.address);
+          return '<tr><td>' + row.rank + '</td><td><a href="' + href + '" target="_blank" rel="noopener" style="color:var(--matrix);font-family:ui-monospace,monospace;font-size:0.82rem;">' + shortAddr(row.address) + '</a></td><td>' + fmt(row.burned) + '</td></tr>';
+        }).join('');
+      }
+
+      async function loadSupply() {
+        const endpoints = [
+          'https://api.xrpl.to/v1/token/' + ISSUER + '-XRH',
+          'https://s1.xrplmeta.org/token/XRH:' + ISSUER
+        ];
+        for (const url of endpoints) {
+          try {
+            const res = await fetch(url, { mode: 'cors' });
+            if (!res.ok) continue;
+            const data = await res.json();
+            let supply = null;
+            if (data.supply != null) supply = parseFloat(data.supply);
+            else if (data.metrics && data.metrics.supply != null) supply = parseFloat(data.metrics.supply);
+            else if (data.token && data.token.supply != null) supply = parseFloat(data.token.supply);
+            if (supply != null && !isNaN(supply)) {
+              if (supplyEl) supplyEl.textContent = fmt(supply);
+              return supply;
+            }
+          } catch (err) { /* next */ }
+        }
+        return null;
+      }
+
+      (async function init() {
+        const burns = await loadBurnsJson();
+        if (burns && burns.top10) {
+          renderTop(burns.top10);
+          if (burnedEl && burns.total_burned != null) {
+            burnedEl.textContent = fmt(burns.total_burned);
+          }
+          if (note) {
+            note.textContent = 'Indexed ' + (burns.burn_tx_count || 0) + ' burn txs from ' + (burns.unique_burners || 0) + ' wallets' + (burns.updated_at ? ' · updated ' + burns.updated_at : '') + '. Public RPC history may not include every old payment.';
+          }
+        } else {
+          renderTop([]);
+        }
+        const supply = await loadSupply();
+        if (supply != null && supplyEl) supplyEl.textContent = fmt(supply);
+        else if (supplyEl && !supplyEl.textContent) supplyEl.textContent = '~999.9M';
+      })();
+    })();
+
+
+    window.addEventListener('resize', () => {
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+  </script>
 </body>
 </html>
