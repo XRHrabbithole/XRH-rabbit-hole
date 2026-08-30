@@ -79,7 +79,7 @@
     <div class="panel" id="menu">
       <img class="logo" src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH" />
       <h1>GO DEEPER</h1>
-      <p class="tag">Free to play. Clear a level, roll random $XRH. Each level is 7% harder. Level 20 is ugly. Collect your pile at the end.</p>
+      <p class="tag">Free to play. Early levels are slow. It stays gentle through the mid teens, then the last levels get fast. Collect your pile at the end.</p>
       <div class="row">
         <button id="btnPlay">START LEVEL 1</button>
       </div>
@@ -115,7 +115,7 @@
         • Dodge red RUGS. Survive the level depth.<br/>
         • Beat a level → random $XRH. Cap 1,000 per level.<br/>
         • Higher levels roll bigger ranges.<br/>
-        • +7% difficulty each level. 20 is meant to hurt.<br/>
+        • Levels 1–8 are slow and sparse. 9–14 pick up. 15–20 get fast.<br/>
         • Collect at the end. Payout is sent to your saved wallet.
       </p>
       <button class="ghost" id="btnBack3">BACK</button>
@@ -201,7 +201,11 @@
     }
 
     function diff(level) {
-      return Math.pow(CONFIG.diffStep, level - 1);
+      // Soft early, steep at the top. Level 1 is a crawl.
+      const L = Math.max(1, level);
+      if (L <= 8) return 1 + (L - 1) * 0.045;
+      if (L <= 14) return 1.315 + (L - 8) * 0.12;
+      return 2.035 + (L - 14) * 0.38;
     }
 
     function rewardRange(level) {
@@ -290,11 +294,14 @@
     }
 
     function speed() {
-      return 2.15 * diff(game.level);
+      return 0.88 * diff(game.level);
     }
 
     function spawnRate() {
-      return Math.min(0.16, 0.032 * diff(game.level));
+      const L = game.level;
+      if (L <= 4) return 0.011 + (L - 1) * 0.002;
+      if (L <= 12) return 0.017 + (L - 4) * 0.004;
+      return Math.min(0.15, 0.049 + (L - 12) * 0.012);
     }
 
     function clearLevel() {
@@ -307,7 +314,8 @@
       const [min, max] = rewardRange(game.level);
       $("clearCopy").textContent = "Level " + game.level + " done. Rolled " + min + "–" + max + " XRH.";
       $("clearWin").textContent = "+" + win.toLocaleString() + " XRH";
-      $("clearBank").textContent = "Bank " + progress.bank.toLocaleString() + " XRH  ·  next is +" + Math.round((diff(game.level + 1) - 1) * 100) + "% harder";
+      const bump = Math.round((diff(game.level + 1) / diff(game.level) - 1) * 100);
+      $("clearBank").textContent = "Bank " + progress.bank.toLocaleString() + " XRH  ·  next is +" + bump + "% faster";
       $("btnNext").textContent = "LEVEL " + (game.level + 1);
       show("clear");
     }
