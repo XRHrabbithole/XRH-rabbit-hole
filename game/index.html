@@ -870,6 +870,12 @@ ${CONFIG.handle} #XRH #XRPL`;
       if (!game.running) draw();
       requestAnimationFrame(menuRain);
     })();
+    const boot = (location.hash || "").replace("#", "").toLowerCase();
+    if (boot === "match" || boot === "nft" || boot === "nftmatch") {
+      setTimeout(startMemory, 50);
+    } else if (boot === "deeper" || boot === "godeeper" || boot === "play") {
+      setTimeout(() => startLevel(progress.level), 50);
+    }
   </script>
 </body>
 </html>
