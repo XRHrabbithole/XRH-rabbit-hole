@@ -23,7 +23,7 @@
     .panel {
       position: absolute; inset: 0; display: flex; flex-direction: column;
       align-items: center; justify-content: center; padding: 24px 18px;
-      background: radial-gradient(ellipse at 50% 20%, #2a1050cc, #07040fe6 60%);
+      background: radial-gradient(ellipse at 50% 20%, #2a105099, #07040fcc 58%);
       text-align: center; z-index: 5;
     }
     .panel.hidden { display: none; }
@@ -403,8 +403,48 @@
       if (game.elapsed >= CONFIG.levelSeconds) clearLevel();
     }
 
+    const matrix = {
+      chars: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789XRH$RABBIT",
+      pastels: ["#ffb7d5", "#c9b6ff", "#ffe08a", "#9be7ff", "#b8f5d0"],
+      size: 16,
+      drops: [],
+      colors: []
+    };
+    function resetMatrix() {
+      const cols = Math.max(8, Math.floor(innerWidth / matrix.size));
+      matrix.drops = Array.from({ length: cols }, () => Math.random() * 30);
+      matrix.colors = Array.from({ length: cols }, () => matrix.pastels[Math.floor(Math.random() * matrix.pastels.length)]);
+    }
+    resetMatrix();
+    addEventListener("resize", resetMatrix);
+
+    function drawMatrix(w, h) {
+      ctx.fillStyle = "rgba(7, 4, 15, 0.18)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.font = matrix.size + "px monospace";
+      ctx.textAlign = "left";
+      for (let i = 0; i < matrix.drops.length; i++) {
+        const x = i * matrix.size;
+        const y = matrix.drops[i] * matrix.size;
+        const ch = matrix.chars[Math.floor(Math.random() * matrix.chars.length)];
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(ch, x, y);
+        ctx.fillStyle = matrix.colors[i];
+        ctx.fillText(matrix.chars[Math.floor(Math.random() * matrix.chars.length)], x, y - matrix.size);
+        if (y > h && Math.random() > 0.975) {
+          matrix.drops[i] = 0;
+          matrix.colors[i] = matrix.pastels[Math.floor(Math.random() * matrix.pastels.length)];
+        }
+        matrix.drops[i]++;
+      }
+    }
+
     function draw() {
       const w = innerWidth, h = innerHeight;
+      if (!game.running) {
+        drawMatrix(w, h);
+        return;
+      }
       const g = ctx.createLinearGradient(0, 0, 0, h);
       g.addColorStop(0, "#14061f");
       g.addColorStop(1, "#050208");
@@ -581,7 +621,10 @@ ${CONFIG.handle} #XRH #XRPL`;
 
     refreshMenu();
     renderBoard();
-    draw();
+    (function menuRain() {
+      if (!game.running) draw();
+      requestAnimationFrame(menuRain);
+    })();
   </script>
 </body>
 </html>
