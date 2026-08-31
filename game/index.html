@@ -40,7 +40,10 @@
       letter-spacing: 0.04em; border-radius: 999px; padding: 12px 18px; font-size: 14px;
       background: linear-gradient(90deg, var(--pink), var(--purple));
     }
-    button.ghost { background: transparent; color: var(--ink); border: 1px solid #ffffff33; }
+    button.ghost, a.ghost {
+      background: transparent; color: var(--ink); border: 1px solid #ffffff33;
+      text-decoration: none; display: inline-block; line-height: 1.2;
+    }
     button.gold { background: linear-gradient(90deg, #ffe08a, #ffb347); }
     .hud {
       position: absolute; top: 0; left: 0; right: 0; z-index: 4;
@@ -97,6 +100,9 @@
       </div>
       <p class="fine" id="statusLine">Playing as Guest</p>
       <p class="fine" id="bankLine">This run: 0 XRH</p>
+      <div class="row">
+        <a class="ghost" href="https://xrhrabbithole.github.io/XRH-rabbit-hole/">← XRH HOME</a>
+      </div>
     </div>
 
     <div class="panel hidden" id="boardPanel">
