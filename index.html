@@ -53,7 +53,7 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      opacity: 0.42;
+      opacity: 0.18;
     }
 
     /* Navbar */
@@ -612,14 +612,23 @@
   <section id="games">
     <div class="container">
       <h2><span class="mono">//</span> Mini-games</h2>
-      <p class="lead">Free to play.</p>
+      <p class="lead">Two games. Same hole. Pick one.</p>
       <div class="nft-highlight">
         <h3>Go Deeper</h3>
         <p>
           Steer the rabbit down the hole, dodge rugs. Make it past the deep state each level and win! Free to play.
         </p>
         <div class="btn-row" style="margin-top: 1.5rem;">
-          <a href="game/" class="btn btn-primary">Play Go Deeper</a>
+          <a href="game/#deeper" class="btn btn-primary">Play Go Deeper</a>
+        </div>
+      </div>
+      <div class="nft-highlight" style="margin-top: 1.25rem;">
+        <h3>NFT Match</h3>
+        <p>
+          Flip 14 cards. Match 7 pairs from World of Warriors, World of Passion, Emperor Apes, and Follow The White Rabbit. Faster finish, higher score. Free to play.
+        </p>
+        <div class="btn-row" style="margin-top: 1.5rem;">
+          <a href="game/#match" class="btn btn-primary">Play NFT Match</a>
         </div>
       </div>
     </div>
@@ -892,35 +901,21 @@
     window.addEventListener('resize', resize);
 
     const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFXRH$RABBIT';
-    const pastels = ['#ffb7d5', '#c9b6ff', '#ffe08a', '#9be7ff', '#b8f5d0'];
     const fontSize = 14;
     let columns = Math.floor(canvas.width / fontSize);
     let drops = Array(columns).fill(1);
-    let colors = Array.from({ length: columns }, () => pastels[Math.floor(Math.random() * pastels.length)]);
-
-    function resetColumns() {
-      columns = Math.floor(canvas.width / fontSize);
-      drops = Array(columns).fill(1);
-      colors = Array.from({ length: columns }, () => pastels[Math.floor(Math.random() * pastels.length)]);
-    }
-    window.addEventListener('resize', resetColumns);
 
     function draw() {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.08)';
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
       ctx.font = fontSize + 'px monospace';
 
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(text, x, y);
-        ctx.fillStyle = colors[i];
-        if (drops[i] > 1) ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y - fontSize);
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
-          colors[i] = pastels[Math.floor(Math.random() * pastels.length)];
         }
         drops[i]++;
       }
