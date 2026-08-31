@@ -65,6 +65,13 @@
     }
     .fine { font-size: 11px; opacity: 0.65; max-width: 340px; line-height: 1.4; }
     .win { color: var(--gold); font-size: 22px; font-weight: 800; margin: 6px 0 12px; }
+    #boardList { width: min(360px, 94vw); margin: 8px 0 14px; padding: 0; list-style: none; text-align: left; }
+    #boardList li {
+      display: flex; justify-content: space-between; gap: 10px;
+      padding: 8px 10px; margin: 4px 0; border-radius: 10px;
+      background: #ffffff10; font-size: 13px;
+    }
+    #boardList li b { color: var(--gold); }
   </style>
 </head>
 <body>
@@ -79,44 +86,36 @@
     <div class="panel" id="menu">
       <img class="logo" src="https://xrhrabbithole.github.io/XRH-rabbit-hole/xrh-icon-256.png" alt="XRH" />
       <h1>GO DEEPER</h1>
-      <p class="tag">Free to play. Early levels are slow. It stays gentle through the mid teens, then the last levels get fast. Collect your pile at the end.</p>
+      <p class="tag">Free to play. Steer the rabbit, dodge rugs, make the board. Early levels are slow. The top levels get fast.</p>
+      <input id="nameInput" placeholder="your name for the board" maxlength="16" autocomplete="off" />
       <div class="row">
         <button id="btnPlay">START LEVEL 1</button>
       </div>
       <div class="row">
-        <button class="ghost" id="btnWallet">WALLET FOR PAYOUT</button>
+        <button class="ghost" id="btnBoard">TOP 10</button>
         <button class="ghost" id="btnHow">HOW IT WORKS</button>
       </div>
-      <p class="fine" id="statusLine">No wallet yet. You can still play and bank winnings.</p>
-      <p class="fine" id="bankLine">Banked this device: 0 XRH</p>
+      <p class="fine" id="statusLine">Playing as Guest</p>
+      <p class="fine" id="bankLine">This run: 0 XRH</p>
     </div>
 
-    <div class="panel hidden" id="walletPanel">
-      <h1>PAYOUT WALLET</h1>
-      <p class="tag">Free to play. Connect so we know where to send the $XRH you bank when you collect.</p>
-      <div class="row">
-        <button id="btnXaman">Xaman</button>
-        <button id="btnCrossmark">Crossmark</button>
-        <button id="btnGem">GemWallet</button>
-      </div>
-      <input id="addrInput" placeholder="or paste your Xaman r-address" autocomplete="off" />
-      <p class="fine" id="xamanHint">Xaman: tap Xaman to pull the address, or copy it from the app and paste it here.</p>
-      <div class="row">
-        <button id="btnUseAddr">SAVE ADDRESS</button>
-        <button class="ghost" id="btnBack1">BACK</button>
-      </div>
+    <div class="panel hidden" id="boardPanel">
+      <h1>TOP 10</h1>
+      <p class="tag">Ranked by deepest level, then XRH banked that run.</p>
+      <ol id="boardList"></ol>
+      <button class="ghost" id="btnBackBoard">BACK</button>
     </div>
 
     <div class="panel hidden" id="howPanel">
       <h1>THE HOLE</h1>
       <p class="tag" style="text-align:left">
         • Free. No entry fee.<br/>
-        • Hold LEFT / RIGHT to steer the XRH rabbit.<br/>
+        • Hold LEFT / RIGHT arrows to steer. Tap for a nudge. Hold longer to go farther.<br/>
         • Dodge red RUGS. Survive the level depth.<br/>
         • Beat a level → random $XRH. Cap 1,000 per level.<br/>
         • Higher levels roll bigger ranges.<br/>
         • Levels 1–8 are slow and sparse. 9–14 pick up. 15–20 get fast.<br/>
-        • Collect at the end. Payout is sent to your saved wallet.
+        • Rug or cash out a run to post it on the Top 10 board.
       </p>
       <button class="ghost" id="btnBack3">BACK</button>
     </div>
@@ -127,7 +126,7 @@
       <div class="win" id="clearWin"></div>
       <div class="row">
         <button id="btnNext">NEXT LEVEL</button>
-        <button class="gold" id="btnCollectClear">COLLECT EARNINGS</button>
+        <button class="gold" id="btnBoardClear">POST TO BOARD</button>
       </div>
       <p class="fine" id="clearBank"></p>
     </div>
@@ -137,21 +136,22 @@
       <p class="tag" id="overStats"></p>
       <div class="row">
         <button id="btnRetry">RETRY LEVEL</button>
-        <button class="gold" id="btnCollectOver">COLLECT EARNINGS</button>
+        <button class="gold" id="btnBoardOver">POST TO BOARD</button>
       </div>
       <button class="ghost" id="btnMenu">MENU</button>
     </div>
 
     <div class="panel hidden" id="collect">
-      <h1>COLLECT</h1>
+      <h1>POST RUN</h1>
       <p class="tag" id="collectCopy"></p>
       <div class="win" id="collectWin"></div>
+      <input id="nameInput2" placeholder="name on the board" maxlength="16" autocomplete="off" />
       <div class="row">
-        <button id="btnConfirmCollect">LOCK CLAIM</button>
+        <button id="btnConfirmCollect">SAVE TO TOP 10</button>
         <button class="ghost" id="btnShare">COPY X POST</button>
       </div>
       <button class="ghost" id="btnMenu2">MENU</button>
-      <p class="fine" id="collectNote">Claim is saved on this device with your wallet. Payout is sent from the prize wallet — the site never holds a seed.</p>
+      <p class="fine" id="collectNote">Saved on this device for now. Global board can come later.</p>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -163,9 +163,6 @@
       currency: "XRH",
       shareUrl: "https://xrhrabbithole.github.io/XRH-rabbit-hole/game/",
       handle: "@TheRabbitH0LZ",
-      // Optional. Create a free app at https://apps.xumm.dev and paste the API Key.
-      // Leave blank to use Xaman in-app + paste address.
-      xummApiKey: "",
       maxReward: 1000,
       diffStep: 1.07,
       levelSeconds: 45
@@ -181,21 +178,17 @@
     };
 
     const progress = {
-      address: localStorage.getItem("xrh_addr") || "",
-      via: localStorage.getItem("xrh_via") || "",
+      name: localStorage.getItem("xrh_name") || "",
       level: 1,
       bank: 0,
       lastWin: 0,
+      bestLevel: 1,
       wins: JSON.parse(localStorage.getItem("xrh_level_wins") || "[]"),
-      claims: JSON.parse(localStorage.getItem("xrh_claims") || "[]")
+      board: JSON.parse(localStorage.getItem("xrh_board") || "[]")
     };
 
-    function shortAddr(a) {
-      return a ? a.slice(0, 6) + "…" + a.slice(-5) : "none";
-    }
-
     function show(id) {
-      ["menu", "walletPanel", "howPanel", "clear", "over", "collect"].forEach((p) => {
+      ["menu", "boardPanel", "howPanel", "clear", "over", "collect"].forEach((p) => {
         $(p).classList.toggle("hidden", p !== id);
       });
     }
@@ -219,19 +212,32 @@
       return min + Math.floor(Math.random() * (max - min + 1));
     }
 
-    function refreshMenu() {
-      $("btnPlay").textContent = "START LEVEL " + progress.level;
-      $("bankLine").textContent = "Banked this run: " + progress.bank.toLocaleString() + " XRH";
-      $("statusLine").textContent = progress.address
-        ? ("Payout wallet " + shortAddr(progress.address))
-        : "No wallet yet. You can still play and bank winnings.";
+    function playerName() {
+      const n = ($("nameInput") && $("nameInput").value.trim())
+        || ($("nameInput2") && $("nameInput2").value.trim())
+        || progress.name
+        || "Guest";
+      return n.slice(0, 16);
     }
 
-    function saveAddr(addr, via) {
-      progress.address = addr;
-      progress.via = via;
-      localStorage.setItem("xrh_addr", addr);
-      localStorage.setItem("xrh_via", via);
+    function refreshMenu() {
+      $("btnPlay").textContent = "START LEVEL " + progress.level;
+      $("bankLine").textContent = "This run: " + progress.bank.toLocaleString() + " XRH  ·  best L" + progress.bestLevel;
+      $("statusLine").textContent = "Playing as " + playerName();
+      if ($("nameInput") && progress.name && !$("nameInput").value) $("nameInput").value = progress.name;
+    }
+
+    function renderBoard() {
+      const list = $("boardList");
+      const rows = (progress.board || []).slice(0, 10);
+      list.innerHTML = rows.length
+        ? rows.map((r, i) => "<li><span>" + (i + 1) + ". " + r.name + " · L" + r.level + "</span><b>" + Number(r.bank).toLocaleString() + " XRH</b></li>").join("")
+        : "<li><span>No runs posted yet.</span><b></b></li>";
+    }
+
+    function saveName(n) {
+      progress.name = n;
+      localStorage.setItem("xrh_name", n);
     }
 
     /* ===== GAME ===== */
@@ -243,7 +249,8 @@
 
     const game = {
       running: false, level: 1, t: 0, depth: 0, elapsed: 0, x: 0.5, vx: 0,
-      holdL: false, holdR: false, obstacles: [], orbs: [], particles: []
+      holdL: false, holdR: false, holdMsL: 0, holdMsR: 0,
+      obstacles: [], orbs: [], particles: []
     };
 
     function resize() {
@@ -284,12 +291,16 @@
       game.elapsed = 0;
       game.x = 0.5;
       game.vx = 0;
+      game.holdL = false;
+      game.holdR = false;
+      game.holdMsL = 0;
+      game.holdMsR = 0;
       game.obstacles = [];
       game.orbs = [];
       game.particles = [];
       $("hud").style.display = "flex";
       $("modeBadge").textContent = "LEVEL " + level;
-      ["menu", "walletPanel", "howPanel", "clear", "over", "collect"].forEach((p) => $(p).classList.add("hidden"));
+      ["menu", "boardPanel", "howPanel", "clear", "over", "collect"].forEach((p) => $(p).classList.add("hidden"));
       loop();
     }
 
@@ -309,6 +320,7 @@
       const win = rollReward(game.level);
       progress.lastWin = win;
       progress.bank += win;
+      progress.bestLevel = Math.max(progress.bestLevel, game.level);
       progress.wins.push({ level: game.level, win, t: Date.now() });
       localStorage.setItem("xrh_level_wins", JSON.stringify(progress.wins.slice(-80)));
       const [min, max] = rewardRange(game.level);
@@ -329,9 +341,13 @@
 
     function tick(dt) {
       const w = innerWidth, h = innerHeight;
-      if (game.holdL) game.vx -= 0.0022 * dt;
-      if (game.holdR) game.vx += 0.0022 * dt;
-      game.vx *= 0.86;
+      if (game.holdL) game.holdMsL += dt; else game.holdMsL = 0;
+      if (game.holdR) game.holdMsR += dt; else game.holdMsR = 0;
+      const power = (ms) => 0.00022 + Math.min(1, ms / 650) * 0.00095;
+      if (game.holdL) game.vx -= power(game.holdMsL) * dt;
+      if (game.holdR) game.vx += power(game.holdMsR) * dt;
+      game.vx *= game.holdL || game.holdR ? 0.9 : 0.78;
+      game.vx = Math.max(-0.00135, Math.min(0.00135, game.vx));
       game.x = Math.max(0.12, Math.min(0.88, game.x + game.vx * dt));
       game.elapsed += dt / 1000;
       game.depth += speed() * dt * 0.35;
@@ -481,6 +497,7 @@
       game.holdR = !game.holdL;
     });
     canvas.addEventListener("pointerup", () => { game.holdL = game.holdR = false; });
+    canvas.addEventListener("pointercancel", () => { game.holdL = game.holdR = false; });
     addEventListener("keydown", (e) => {
       if (e.key === "ArrowLeft" || e.key === "a") game.holdL = true;
       if (e.key === "ArrowRight" || e.key === "d") game.holdR = true;
@@ -491,143 +508,73 @@
     });
 
     function openCollect() {
-      $("collectWin").textContent = progress.bank.toLocaleString() + " XRH";
-      $("collectCopy").textContent = progress.bank
-        ? ("Levels cleared this run: " + progress.wins.filter((w) => w.t > Date.now() - 86400000).length)
-        : "Bank is empty. Clear a level first.";
-      $("collectNote").textContent = progress.address
-        ? ("Will be claimed to " + shortAddr(progress.address))
-        : "Save a wallet first so payout has somewhere to go.";
+      $("collectWin").textContent = "L" + progress.bestLevel + " · " + progress.bank.toLocaleString() + " XRH";
+      $("collectCopy").textContent = progress.bank || progress.bestLevel > 1
+        ? "Post this run to the Top 10."
+        : "Clear a level first.";
+      if ($("nameInput2")) $("nameInput2").value = playerName() === "Guest" ? "" : playerName();
       show("collect");
     }
 
     function lockClaim() {
-      if (!progress.bank) { toast("Nothing to collect"); return; }
-      if (!progress.address) { toast("Save a payout wallet first"); show("walletPanel"); return; }
-      const claim = {
-        address: progress.address,
-        amount: progress.bank,
-        levels: progress.wins.slice(),
-        t: new Date().toISOString()
+      const name = playerName();
+      if (name === "Guest") {
+        toast("Put a name on the board first");
+        $("nameInput2").focus();
+        return;
+      }
+      saveName(name);
+      const entry = {
+        name,
+        level: Math.max(progress.bestLevel, game.level || 1),
+        bank: progress.bank,
+        t: Date.now()
       };
-      progress.claims.push(claim);
-      localStorage.setItem("xrh_claims", JSON.stringify(progress.claims.slice(-40)));
-      toast("Claim locked: " + progress.bank + " XRH → " + shortAddr(progress.address));
+      progress.board.push(entry);
+      progress.board.sort((a, b) => (b.level - a.level) || (b.bank - a.bank) || (b.t - a.t));
+      progress.board = progress.board.slice(0, 10);
+      localStorage.setItem("xrh_board", JSON.stringify(progress.board));
+      toast("Posted: " + name + " · L" + entry.level);
       progress.bank = 0;
       progress.level = 1;
+      progress.bestLevel = 1;
       progress.wins = [];
+      renderBoard();
       refreshMenu();
-      show("menu");
+      show("boardPanel");
     }
 
     function share() {
       const text =
-`Cleared down the $XRH rabbit hole and banked ${progress.bank.toLocaleString()} XRH.
+`Went down the $XRH rabbit hole. Best level ${progress.bestLevel}. Banked ${progress.bank.toLocaleString()} XRH.
 
-Free to play. Level ${progress.level}. Follow the white rabbit.
+Free to play.
 ${CONFIG.shareUrl}
 
 ${CONFIG.handle} #XRH #XRPL`;
       navigator.clipboard.writeText(text).then(() => toast("X post copied")).catch(() => prompt("Copy:", text));
     }
 
-    $("btnPlay").onclick = () => startLevel(progress.level);
-    $("btnWallet").onclick = () => show("walletPanel");
+    $("btnPlay").onclick = () => {
+      const n = playerName();
+      if (n && n !== "Guest") saveName(n);
+      startLevel(progress.level);
+    };
+    $("btnBoard").onclick = () => { renderBoard(); show("boardPanel"); };
     $("btnHow").onclick = () => show("howPanel");
-    $("btnBack1").onclick = $("btnBack3").onclick = () => { refreshMenu(); show("menu"); };
-    $("btnUseAddr").onclick = () => {
-      const addr = $("addrInput").value.trim();
-      if (!addr.startsWith("r") || addr.length < 25) { toast("Need an XRPL r-address"); return; }
-      saveAddr(addr, "paste");
-      toast("Payout wallet saved");
-      refreshMenu();
-      show("menu");
-    };
-    async function connectXaman() {
-      const ua = navigator.userAgent || "";
-      const inXaman = /xumm|xaman/i.test(ua) || !!window.xumm || !!window.XummSdk;
-
-      if (window.xumm && window.xumm.user) {
-        try {
-          const acc = await window.xumm.user.account;
-          if (acc && acc.startsWith("r")) {
-            saveAddr(acc, "xaman");
-            toast("Xaman saved");
-            refreshMenu();
-            show("menu");
-            return;
-          }
-        } catch (_) {}
-      }
-
-      if (CONFIG.xummApiKey) {
-        try {
-          if (!window.Xumm) {
-            await new Promise((resolve, reject) => {
-              const s = document.createElement("script");
-              s.src = "https://xumm.app/assets/cdn/xumm.min.js";
-              s.onload = resolve;
-              s.onerror = reject;
-              document.head.appendChild(s);
-            });
-          }
-          const xumm = new window.Xumm(CONFIG.xummApiKey);
-          await xumm.authorize();
-          const acc = await xumm.user.account;
-          if (!acc) throw 0;
-          saveAddr(acc, "xaman");
-          toast("Xaman saved");
-          refreshMenu();
-          show("menu");
-          return;
-        } catch {
-          toast("Xaman sign-in failed. Paste the r-address.");
-        }
-      } else if (!inXaman) {
-        toast("Open this page in Xaman, or paste your Xaman r-address below.");
-        $("addrInput").focus();
-        return;
-      } else {
-        toast("Could not read Xaman. Paste the r-address from the app.");
-        $("addrInput").focus();
-      }
-    }
-
-    $("btnXaman").onclick = connectXaman;
-    $("btnCrossmark").onclick = async () => {
-      if (!window.crossmark) { toast("Install Crossmark"); return; }
-      try {
-        const res = await window.crossmark.signInAndWait();
-        const addr = res?.response?.data?.address || res?.data?.address;
-        if (!addr) throw 0;
-        saveAddr(addr, "crossmark");
-        toast("Crossmark saved");
-        refreshMenu(); show("menu");
-      } catch { toast("Crossmark failed"); }
-    };
-    $("btnGem").onclick = async () => {
-      const api = window.GemWalletApi;
-      if (!api) { toast("Open in GemWallet"); return; }
-      try {
-        const a = await api.getAddress();
-        const addr = a?.result?.address;
-        if (!addr) throw 0;
-        saveAddr(addr, "gem");
-        toast("GemWallet saved");
-        refreshMenu(); show("menu");
-      } catch { toast("GemWallet failed"); }
-    };
+    $("btnBackBoard").onclick = $("btnBack3").onclick = () => { refreshMenu(); show("menu"); };
     $("btnNext").onclick = () => {
       progress.level = game.level + 1;
       startLevel(progress.level);
     };
     $("btnRetry").onclick = () => startLevel(game.level);
-    $("btnCollectClear").onclick = $("btnCollectOver").onclick = openCollect;
+    $("btnBoardClear").onclick = $("btnBoardOver").onclick = openCollect;
     $("btnConfirmCollect").onclick = lockClaim;
     $("btnShare").onclick = share;
     $("btnMenu").onclick = $("btnMenu2").onclick = () => { $("hud").style.display = "none"; refreshMenu(); show("menu"); };
 
     refreshMenu();
+    renderBoard();
     draw();
   </script>
 </body>
