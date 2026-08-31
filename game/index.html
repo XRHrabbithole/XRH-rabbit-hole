@@ -367,7 +367,7 @@
         });
       }
       if (Math.random() < 0.03) {
-        game.orbs.push({ x: 0.2 + Math.random() * 0.6, y: -20, r: 9, grabbed: false });
+        game.orbs.push({ x: 0.2 + Math.random() * 0.6, y: -20, r: 9, grabbed: false, val: 1 });
       }
 
       const fall = speed() * dt * 0.9;
@@ -381,7 +381,10 @@
         const dx = px - o.x * w, dy = py - o.y;
         if (dx * dx + dy * dy < (pr + o.r) * (pr + o.r)) {
           o.grabbed = true;
-          game.particles.push({ x: o.x * w, y: o.y, vx: 0, vy: -1, life: 1, color: "#ffe08a" });
+          const val = 1;
+          progress.bank += val;
+          game.particles.push({ x: o.x * w, y: o.y, vx: 0, vy: -1.4, life: 1, color: "#ffe08a", label: "+" + val });
+          $("coinHud").textContent = progress.bank.toLocaleString() + " XRH";
         }
       }
       for (const o of game.obstacles) {
@@ -505,8 +508,15 @@
       drawTokenRabbit(game.x * w, h * 0.72, game.vx);
       for (const p of game.particles) {
         ctx.globalAlpha = Math.max(p.life, 0);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, 3, 3);
+        if (p.label) {
+          ctx.fillStyle = p.color;
+          ctx.font = "bold 12px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(p.label, p.x, p.y);
+        } else {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, 3, 3);
+        }
       }
       ctx.globalAlpha = 1;
       ctx.fillStyle = "#ffffff44";
